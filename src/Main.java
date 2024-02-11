@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -5,15 +7,9 @@ public class Main {
 
         boolean check = palindromeChecker("racecar");
         boolean checkTwo = palindromeChecker("muthomi");
-        System.out.println(check);
-        System.out.println(checkTwo);
-        System.out.println(palindromeChecker("civic"));
-        System.out.println(palindromeChecker("level"));
-        System.out.println(palindromeChecker("rotor"));
-        System.out.println(palindromeChecker("kaYak"));
-        System.out.println(palindromeChecker("Titoh"));
+        int[] toBeReversed =new int[]{1,2,3,4,5,6};
 
-
+        System.out.println(Arrays.toString(reverseArray(toBeReversed)));
 
 
     }
@@ -33,5 +29,21 @@ public class Main {
         }
 
         return true;
+    }
+
+    public static int[] reverseArray(int[] arr) {
+        int pointer0ne = 0;
+        int pointerTwo = arr.length - 1;
+
+        while (pointer0ne < pointerTwo) {
+            int elementAtPriorPosition = arr[pointer0ne];
+            arr[pointer0ne] = arr[pointerTwo];
+            arr[pointerTwo] = elementAtPriorPosition;
+            pointer0ne++;
+            pointerTwo--;
+
+        }
+
+        return arr;
     }
 }
