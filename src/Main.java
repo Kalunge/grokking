@@ -5,7 +5,7 @@ public class Main {
 
         System.out.println("Hello world!");
 
-        System.out.println(Arrays.toString(pairWithGivenSum(11, new int[]{4, 5, 6, 7, 8})));
+
 
 
     }
@@ -45,20 +45,37 @@ public class Main {
         return arr;
     }
 
-    public static int[] pairWithGivenSum(int sum, int[] arr) {
-        int pointerOne = 0;
-        int pointerTwo = arr.length - 1;
-        int[] pair = new int[2];
+    public static boolean findSumOfThree(int[] nums, int target) {
 
-        while (pointerOne < pointerTwo) {
-            int sumOfPairs = arr[pointerOne] + arr[pointerTwo];
-            if (sumOfPairs == sum) {
-                pair[0] = arr[pointerOne];
-                pair[1] = arr[pointerTwo];
-                return pair;
+//        for (int i = 0; i < nums.length; i++) {
+//            for (int j = i + 1; j < nums.length; j++) {
+//                for (int k = j + 1; k < nums.length; k++) {
+//                    int sum = nums[i] + nums[j] + nums[k];
+//                    if (sum == target) {
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+
+        for (int i = 0; i < nums.length; i++) {
+            int lower = i + 1;
+            int higher = nums.length - 1;
+
+            while (lower < higher) {
+                int sum = nums[i] + nums[lower] + nums[higher];
+                if (sum == target) {
+                    return true;
+                }
+                lower++;
+                higher--;
             }
-            pointerTwo--;
         }
-        return pair;
+
+        return false;
     }
+
+//    the time complexity of the function findSumOfThree is o(n**3), where n is the length of the input array ```nums```. this is because there are three nested loops that iterate over the array resulting in a cubic time complexity. the buil-in java functions used in the code such as array.length and addtion and comparison, all have constant time complexity and do not affect the overall time complexity of the fucntion
+//    the space complexity of the function findSumOfThree is o(1) because it only uses a constant amount of space for the two pointers.
+
 }

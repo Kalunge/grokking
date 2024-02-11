@@ -99,10 +99,35 @@ the time complexity id O(n), where n is the number of characters in the string. 
 ### space complexity
 the space complexity is O(1), since we use constant space to store two indexes
 
+# Sum of three values
+## Statement
+- given an array of integers , ```nums```, and an interger value, ```target```, determine if any three integers in ```nums``` whose sum is equal to the target, that is ```nums[i] + nums[j] + nums[k] == target```. Return True if three such integers exists in the array. otherwise return false. 
+### solution
+### Naive approach
+- the naive approach to solving this problem is to use three nested loops. each nested loop starts at the index greater than it parent loop. for example f we use the iterators i, j and k in the loops, j will start from i + 1 and k will start from j + 1. this approach will check all the possible triplests to see if they sum uo to the current value
+- we have the required solution , but at what cost? since we are using three nested loops, the overall time complexity for this solution ido(n^3). however, we are not using any extra space to get the final output, so the space complexity is o(1)
 
+### Optimized approach using two pointers
+- the two pointers pattern is used to solve a similar problem where we find two integers instead of three that sum up to the target value. we place one pointer at each end of the sorted array , the low pointer and the high pointer, and then traverse the array conditionally to find the two imtegers that sum up to the target value.
+- now, in this problem since we need to find the three integers that sum up to the target value, we slightly enhance the two pointers pattern. we use this pattern inside an additional loop. in the loop we keep one value of the array with us and then look for the other two integers against this selected value that complete the triplet whose sum equals the target value.
+- first, we sort the input array, ```nums```, in ascending order. this is because traversing an unsorted array would lead to a bad time complexity. if the input array is sorted, we can easily decide, depending on the sum of the current triplet, whether to move the low pointer toward the end or the higher pointer toward the start. next we iterate over the elements in nums using the index i, where i < nums.length - 2. against each nums[i], we find the other two integers that complete the triplet whose sum equals the target value, that is nums[i] + nums[low] + nums[high] == target. we do this by traversing nums with the low and high pointers. in each iteration, the traversal wtarts with the low pointer being nums[i+1] and high pointer at the last element of nums. then, depending on the current sum value, we move the pointers as follows
+* if the sum of the triplet is equal to the target, we return TRUE otherwise we continue
+* if the sum of the triplet is less than the target we move the low pointer foward that is toward the end. the aim is to increase the value of the sum so that it gets closer or equal to the target value
+* if the sum of the triplet is greater than the target we move the high pointer towards the start. the aim is to reduce the value of the sum so that it gets closer or equal to the target value .
+* we repeat this for each iteration unitll we get the reuired triplet
 
+### Solution Summary
+* store the current array element and set up two pointers(```low``` and ```high```) to find the other two elements that complete the required triplet.
+  * the low pointer is set to the current loop's inde + 1
+  * the high is set to the last index of the array
+* calculate the sum of array elements pointed to by the current loop's index and the low and high pointers
+* if the sum is equal to target return TRUE
+* if the sum is less than target move the low pointer forward
+* if the sum is greater than target, move the high pointer backward
+repeat until the loop has processed the entire array. if after processing the entire array, we don't find any triplet that matches our requirement, we return FALSE
+### Time complexity
+- the solution above, sorting the array takes o(nlog(n)) and the nested loop takes o(n^2) to find the triplet. Here, n is the number of elements in the input array. therefore the total time complexity of this solution is O(nlog(n) + n^2), which simplifies to O(n^2)
 
-
-
-
+### Space complexity
+the space complexity of this solution, primarily depends on the sorting algorithm we use. we use the built-in java function, Arrays.sort(), so the space complexity of the provided solution is O(1)
 
