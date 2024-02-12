@@ -201,17 +201,94 @@ Given a sentence, reverse the order of ots words without affecting the order of 
 in this problem, we first reverse the complete string. Now take two pointers ```start``` and ```end```, initialized with the start of the list which is index 0
 Now iterate a loop until start is less than the length of the list, and in each iteration move the end pointer until it hits a space. at this point, we have a complete work starting from the start index to the end - 1index, but with the characters in reverse order. 
 
-to change the order of characters, we call the strRev function with the starting and ending poisitins of the word. this will reverse the characters in the word. 
+to change the order of characters, we call the strRev function with the starting and ending positions of the word. this will reverse the characters in the word. 
 now update the start and end pointers to the next of end pointer, which is basically the first character of the next word. Now, repeat this process for the next word. at the end of all iterations, we get the reversed words in the string
 
+# Fast and Slow pointers
+- similar to the two pointers pattern, the fast and slow pointers pattern uses two pointers to traverse an iterable data structure at different speeds. it is ususally used to identify distinguishable features of directional data structures, such as linked list or an array.
+- the pointers can be used to traverse the array or list in either direction, however one moves faster than the other. generally the slow pointer moves forward by a factor of one  and the fast poiner moves by a factor of two in each step. however, the speed can be adjusted according to the problem statement. 
+- unlike the two pointers approach, which is concerned with data values, the slow and fast pointers approach is used to determine data sturcture traits using indices in arrays or node pointers in linked lists. the approach is commonly used to detect cycles in the given data structure, so it is known as Floyd's cycle detection
+- the key idea is that the pointers start at the same location but they move forward at different speeds. if therre is a cycle, the two are bound to meet at some point in the traversal. to understand the concept, think of two runners on a track. while they start from the same point, they have different running speeds. if the race track is a circle, the first runner will overtake the slower one after completing a lap. on the other hand, if the track is straight, the faster runner will end the race before the slower one, hence never meeting on the track again. the fast and slow pointers pattern uses the same intuition.
+## Does my problem match this pattern?
+**yes** if either these conditions are fulfilled
+* Either as an intermediate step, or as the final solution, the problem requires identifying 
+  * the first x % of the elements in a linked list or
+  * the element at the k-way point in a linked list, for example, the middle element, or the element at the start of the second quartile
+  * the kth last element in a linked list
+* solving the problem requires detecting the presence of a cycle in a linked list
+* solving the problem requires detecting the presence of a cycle in a sequence of symbols
+**No** if either of these conditions is fulfilled
+* the input data cannot be traversed in a linear fashion, that is, it is neither in an array nor in a linked list nor in a string of caharacters
+* the problem can be solved with two pointers traversing an array or a linked list at the same pace.
+## Real-world problems
+* **symlink verification**: Fast and slow pointers can be used in a symlink verification utility in an operating system. a symbolic link, or symlink, is simply a shortcut to another file. Essentially, it is a file that points to another file. Symlinks can easily create loops or cycles where shortcuts points to each other. to avoid such ccurences, a symlink verification utility can be used. similar to a linked list, fast and slow pointers can detect a loop in the symlinks by moving along the connected files or directories at different speeds.
+* **compiling an object-oriented programme**: uUsually, programs are not contained in a single file. particularly, for large applications, modules can be divided into different files for better maintenance. dependency relationships are then defined to specify the order of compilation for these files. However, sometimes, there might be a cyclic dependencies that can lead to an error. fast and slow pointers can be used to identify and remove these cycles for seamless compilation and execution of the program.
 
+## Happy Number
+write an algorithm to determine if number n is a happy number.
+we use the following process to check if a given number is a happy number
+* starting with the given number n, replace the number with the sum of the squares of its digits.
+* repeat the process until
+  * the number equals 1, which will depict that the given number is a happy number
+  * it enters a cycle, which will depict that the given number n is not a happy number
+* return TRUE if n is a happy number and FALSE if not. 
 
+## Solution
+### naive approach
+the brute force approach is to repeatedly calculate the squared sum of digits of the input number and store the computed sum in a hash set. for every calculation, we check if the sum is already present in the set. if yes, we have detected a cycle and should return false. otherwise, we add it to our hashset and continue further. if our sum converges to 1 we have found a happy number.
+while this approach works well for small numbers, we might have to perform several computations for large numbers to get the required result. so, it might get infeasible for such cases. the time complexity of this approach is O(log n). the space complexity is O(log n) since we are using additional space to store our calculated sums.
 
+### Optimized approach using fast and slow pointers pattern
+- an efficient approach to solve this problem is to use fast and slow pointers. we know that a unhappy number eventually gets stuck in an infinite loop. However, there is no way for our program to detect this loop and terminate, unless we keep track of the calculated sums, which requires additional space.
+- if we use the fast and slow pointers approach here, the fast pointer would eventually reach 1, in which case we will return True. otherwise it would meet the slow pointer, which would mean that the two pointers are in an endless loop, and we can return FALSE
+- as an example, suppose we have the number 2 as our n. this is what infinite loop would look like.
 
+### step by step solution construction
+we will start off our solution by constructing a helper function to calculate the squared sum of digits of the input number. we know that we need to isolate the digits in our number and adding its squared value to the total sum.
+the helper function will find the last digit of the given number by taking its modulus with 10. we will store this in a variable digit. now since we have already separated the last digit we can get the remaining digits by dividing the number by 10. lastly we will store the squared sum of digit in a variable named totalSum. we will repeat this until our number becomes zero.
+to understand this better consider a number 19.
 
+first iteration
+* digit = 19 % 10 = 9(last digit)
+* number = 19 / 10 = 1(remaining digits)
+* totalSum = 81
 
+second iteration
+* digit = 1 % 10 = 1(last digit)
+* number = 1 / 10 = 0(remaining digits)
+* total sum = 81 + 1^2 = 82
+as the number has become 0, we will terminate our program here. the square sum of the digits in 19 is 82. 
 
+Next, we will initialize two variables fast and slow with the input number, and the sum of its digits respectively. in each iteration, we will move slow one step forward and fast two steps forward. that is we will call the sumofsquaredigits function once for slow and twice for fast.
+slow = sumofsquaredigits(slow);
+fast = sumofsquaredigits(sumofsquaredigits(fast))
 
+if at any instance fast becomes 1, we have found a happy number. we will return True in this case. otherwise if fast becomes equal to slow, we have found a loop and we will return FALSE.
+
+### solution summary
+we maintain track of two values using a slow pointer and a fast pointer. the slow runner advances one number at each step, while the fast runner advances two number. we detect if there is any cycle by comparing the two values and checking if the fast runner has inded reached the number one. we return True or False depending on if those conditions. 
+
+### Time complexity
+the time complexity for this algorithm is O(log n), where n is the input number.
+the worst case complexity of this algorithim is given by the case of a non-happy number since it gets stuck in a cycle, whereas a happy number quickly converges to 1. let us first calculate the time complexity of the sum digits function. since we are calculating the sum of all digits in a number, the time complexity of this function is O(log n), because the number of digits in the number n is log 10n
+before delving into the detailed complexity analysis , let us first consider the largest possible next number for each given number of digits
+
+| Digits | largest number | sum of squareddigits |
+|--------|----------------|----------------------|
+| 1      | 9              | 81                   |
+| 2      | 99             | 162                  |
+| 3      | 999            | 243                  |
+| 4      | 9999           | 324                  |
+| 12     | 999999999999   | 927                  |
+| 13     | 9999999999999  | 1053                 |
+| 14     | 99999999999999 | 1134                 |
+
+to estimate the count of numbers in a cycle, let us consider the following two cases.
+1. **Numbers with three digits**: the largest 3 digit number is 999. the sum of the squares of its digits is 243. therefore, for three digits , no number in the cycle can go beyond 243. therefore the time complexity in this case is given asO(243 * 3), where 243 is the maximum count of numbers in a cycle and 3 is the number of digits in a three-digit number. this is why the time complexity in the case of numbers with three digits comes out to be O(1)
+2. **Number with more than 3 digits**: any number with more than three digits will lose at least one digit at every step until it becomes a three-digit number . for example, the first-four digits number that we can get in the cycle is 1053 which is the sum of the square of the digits in 99999999999. therefore, the time complexity of any number with more than three digits can be expressed as O(log n + log log n + log log log n+ ....) since O(log n) is the dominating term, we can write the time complexity as O(log n)
+therefore, the total time complexity comes out to be O(1 + log n), which is O(log n)
+### space complexity
+the space complexity for this algorithm is O(1)
 
 
 

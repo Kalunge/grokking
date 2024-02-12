@@ -3,13 +3,17 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("Hello world!");
-        int[] colors = new int[] {1,0,2,1,2,2};
-        Arrays.sort(colors);
-        System.out.println(Arrays.toString(colors));
-        String sentence = "My name is titus Muthomi";
-        System.out.println(sentence.charAt(1));
-        System.out.println(sentence.toCharArray()[1]);
+//        System.out.println("Hello world!");
+//        int[] colors = new int[] {1,0,2,1,2,2};
+//        Arrays.sort(colors);
+//        System.out.println(Arrays.toString(colors));
+//        String sentence = "My name is titus Muthomi";
+//        System.out.println(sentence.charAt(1));
+//        System.out.println(sentence.toCharArray()[1]);
+
+        int division = 1 / 10;
+
+        System.out.println(division);
 
 
 
