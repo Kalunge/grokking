@@ -289,9 +289,31 @@ to estimate the count of numbers in a cycle, let us consider the following two c
 therefore, the total time complexity comes out to be O(1 + log n), which is O(log n)
 ### space complexity
 the space complexity for this algorithm is O(1)
+## Linked List Cycle
+### Naive approach
+the naive approach is to traverse the linked list and store the current node in a set. At each iteration, we check if the current node is already present in the set. if it is, we have found a cycle and return TRUE. otherwise we add the node to the set. if the traversal has been completed, return FALSE, sine we have reached the end of the linked list without encountering a cycle.
 
+the time complexity is O(n), since we only traverse the linked list once, where n represents the total number of nodes in a linked list. the space complexity of the naive approach is also O(n), since in the worst case, we store n nodes in the set.
 
+### Optmized approach using fast and slow pointers
+This problem can be solved efficiently using the fast and slow pointers technique, where the fast pointer moves two steps, and the slow pointer moves one step in the linked list.
+if there is no cycle in the linked list, the fast pointer will reach the end of the linked list before the slow pointer. if there is a cycle, the fast pointer will eventually catch up to the slow pointer, since it is moving faster. when this happens, that we have a cycle in the linked list. te following steps can be performed to implement the algorithm above
+* we initialize two pointers fast and slow which point to the head of the linked list
+* we traversee the linked list using these two pointers, they move in the following way
+  * the slow pointer moves only one node forward in each iteration
+  * the fast pointer moves two nodes forward in each iteration, which means that it skips a node.
+* if the fast pointer becomes null, we have reached the end of the linked list. since no cycle exists in the linked list return FALSE
+* if both slow and fast pointers become equal to each other, return TRUE, since a cycle exists in the linked list.
+### solution summary
+to recap, the solution to this problem can be divided into the following three parts
+* initialize both the slow and fast pointers to the head
+* move both pointers at different rate, i.e, the slow pointer will move one step ahead while the fast pointer will move two steps ahead.
+* if both pointers are equal at some point we know that a cycle exists.
 
+### Time complexity
+the time complexity of the algorithm is O(n), where n is the number of nodes in the linked list.
+### space complexity
+the space complexity of the algorithm is O(1)
 
 
 
