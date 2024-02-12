@@ -4,6 +4,9 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.println("Hello world!");
+        int[] colors = new int[] {1,0,2,1,2,2};
+        Arrays.sort(colors);
+        System.out.println(Arrays.toString(colors));
 
 
 

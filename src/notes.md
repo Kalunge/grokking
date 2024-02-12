@@ -131,3 +131,99 @@ repeat until the loop has processed the entire array. if after processing the en
 ### Space complexity
 the space complexity of this solution, primarily depends on the sorting algorithm we use. we use the built-in java function, Arrays.sort(), so the space complexity of the provided solution is O(1)
 
+## Remove nth Node from End of list
+### Naive solution
+- the naive approach calculates the length of the linked list by traversing the complete list. Then, we set a pointer say ```ptr```, at the start of the list and move it through the list unitll it reaches (k -n - 1) node. the ```ptr``` pointer now points to the node before the target node i.e the nth last node. save the next node of the ```ptr``` in a temporary pointer. Relink th eptr node to the node following ptr next node. delete the node pointed by the temporary pointer. by doing so the nth last node will be removed. However, this approach traverses the linked list twice. let us see if we can use two pointers pattern to implement our solution in a single pass.
+### Optimized approach using two pointers
+Two pointers, ```left``` and ```right```, are set at the head nod. Move the right pointer n steps forward. after doing that, both pointers are exactly separated by n nodes apart. start moving both pointers forward untill the right pointer reaches the last node. at this point, the left pointer will be pointing to the node before the target node i.e the nth last node. we relink the left node to the node following the left's next node. 
+if the right pointer reaches null while moving n steps forward, it means that the head node should be removed. we return the head's next node. 
+
+### Solution Summary
+1. Two pointers ```right``` and ```left```, are set at the head node.
+2. move the ```right``` pointer n steps forward
+3. if right reaches null, return heads next node
+4. move both right and left pointers forward till right reaches the last node
+5. relink the left node to the node at left's next to the next node. 
+6. return head
+
+### Time complexity
+- the time complexity id O(n), where n is the number of nodes in the linked list
+
+### Space complexity
+- the space complexity is O(1) because we use constant space to store two pointers
+
+## Sort colors
+given an array, colors, which contains a combination of the following three elements
+  * 0(representing red)
+  * 1(representing white)
+  * 2(representing blue)
+sort the array in place so that the elements of the same color are adjacent, with the colors in the order of red, white and blue. the function should return the same array
+### solution
+### Naive approach
+- the naive approach would be to sort the array. this would arrange the elements in the desired positions, i.e 0s, then 1s and lastly 2s. the time complexity of this approach would be O(n log(n)), which is the time required to sort the array. the space complexity of this approach would be O(1) since no extra space is being used
+
+### Optimized approach using two pointers
+- the idea is to use two pointers to traverse the array from either end. they keep track of the read and blue elements, respectively. in addition,we maintain another pointer to keep track of the white elements. These pointers are used to traverse the array in one pass. they are initialized as follows
+  * ```red```: This pointer will initially point to the 0th index of the array.
+  * ```white```: This pointer will initially point to the 0th index of the array
+  * ```blue```: This pointer will initially point to the last index of the array
+### How the algorithm works
+1. Condition 1: if ```colors[white]``` is 0, the white pointer points to red. so we check further condition
+   1. Condition 1.1: if the ```colors[red]``` is not 0, we swap the elements of ```colors[white]``` and ```colors[red]```. next we move both the red and white pointers one position forward.
+   2. otherwise ```colors[red]``` will be 0, and there is no point in swapping. so we move both the red and white pointers one position forward
+2. Condition 2: otherwise if ```colors[white]``` is 1, the white pointer points to white. so we increment the white pointer by 1 to analyze the next element.
+3. Condition 3: otherwise the ```colors[white]``` will be 2, i.e the white pointer points to blue. so we check two further conditions
+   1. cCondition 3.1: if ```colors[blue]``` is not 2, we swap the elements of ```colors[white]```and ```colors[blue]```. next we move the blue pointer one position backward
+   2. Condition 3.3 otherwise both ```colors[white]``` and ```colors[blue]``` will be 2, there is no point in swapping. so we move the blue pointer one position backward.
+Note: when we decrement the blue pointer, the white pointer remains unchanged since it has to analyze the swapped element to determine if further swapping is required with the red pointer.
+* the three steps above are repeated until the blue pointer becomes less than the white pointer i.e no elements are left to swap. 
+
+
+### solution Summary
+the solution of this problem van be divided into 5 main parts
+* we traverse through the array using three pointers, red, white and blue
+* if the element pointed by the white pointer is 0, we swap it with the element pointed by the red pointer if it is not pointing to 0, and increment bith the red and white pointers
+* if the element pointed by the white pointer is 1, we increment the white pointer
+* if the element pointed by the white pointer is2, we swap it with the element pointed by the blue pointer if it is not pointing to 2 and decrement the blue pointer
+* the array is sorted when the blue pointer become less than the white pointer.
+
+### Time complexity
+- the time complexity of this solution is O(n), since we are only traversing the array once
+
+### Space complexity
+- the space complexity of this solution is O(1) since no extra space is used. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
