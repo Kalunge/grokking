@@ -195,8 +195,14 @@ the solution of this problem van be divided into 5 main parts
 
 
 
+## Reverse words in a string
+Given a sentence, reverse the order of ots words without affecting the order of letters within a given word.
 
+in this problem, we first reverse the complete string. Now take two pointers ```start``` and ```end```, initialized with the start of the list which is index 0
+Now iterate a loop until start is less than the length of the list, and in each iteration move the end pointer until it hits a space. at this point, we have a complete work starting from the start index to the end - 1index, but with the characters in reverse order. 
 
+to change the order of characters, we call the strRev function with the starting and ending poisitins of the word. this will reverse the characters in the word. 
+now update the start and end pointers to the next of end pointer, which is basically the first character of the next word. Now, repeat this process for the next word. at the end of all iterations, we get the reversed words in the string
 
 
 

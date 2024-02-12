@@ -7,6 +7,9 @@ public class Main {
         int[] colors = new int[] {1,0,2,1,2,2};
         Arrays.sort(colors);
         System.out.println(Arrays.toString(colors));
+        String sentence = "My name is titus Muthomi";
+        System.out.println(sentence.charAt(1));
+        System.out.println(sentence.toCharArray()[1]);
 
 
 
@@ -80,5 +83,7 @@ public class Main {
 
 //    the time complexity of the function findSumOfThree is o(n**3), where n is the length of the input array ```nums```. this is because there are three nested loops that iterate over the array resulting in a cubic time complexity. the buil-in java functions used in the code such as array.length and addtion and comparison, all have constant time complexity and do not affect the overall time complexity of the fucntion
 //    the space complexity of the function findSumOfThree is o(1) because it only uses a constant amount of space for the two pointers.
+
+
 
 }
