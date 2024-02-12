@@ -315,7 +315,25 @@ the time complexity of the algorithm is O(n), where n is the number of nodes in 
 ### space complexity
 the space complexity of the algorithm is O(1)
 
+# Middle of the Linked List
+### Naive approach
+in the naive approach, we can use an external array to store the elements of the linked list, and then we return the element present at the index array.length / 2 as the middle of the linked list. the time and space complexity of this approach is O(n), where n is the number of nodes in the linked list. let us see if we can solve this problem better time and space complexity
 
+### Optimized approach using fast and slow pointers
+we can use the fast and slow pointers to solve this problem with constant space complexity. the slow pointer traverses the linked list one step at atime while the fast pointer takes two steps at a time. this makes the fast pointer reach the end of the linked list in n//2 iterations, and the slow pointer, by this time reaches the middle of the linked list.
+
+the following steps are applied when identifying the middle of the linked list
+1. create two pointers slow and fast initially at the head of the linked list, i.e, pointing to the first node.
+2. traverse the linked list using both pointers, where the slow pointer will move one step forward, and the fast will move two steps forward
+3. when the fast pointer reaches the last element of the linked list or becomes equal to nulll, the slow pointer at that time will point to the middle node. Return the node that the slow pointer points to. 
+### Solution summary
+1. create two pointers, slow and fast initially at the head of the linked list.
+2. while traversing the linked list, move the slow pointer one step forward and the fast pointer two steps forward
+3. when the fast pointer reaches the last node or NULL the slow pointer will point to the middle node of the linked list. Return the node that the slow pointer points to.
+### Time complexity
+the time complexity of the solution above is O(n), where n is the number of the nodes in the linked list.
+### space complexity
+the space complexity of theis solution is constant, that is O(1)
 
 
 
