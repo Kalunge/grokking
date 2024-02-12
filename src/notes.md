@@ -335,6 +335,26 @@ the time complexity of the solution above is O(n), where n is the number of the 
 ### space complexity
 the space complexity of theis solution is constant, that is O(1)
 
+# Circular Array Loop
+### Naive approach
+The naive approach is to traverse the whole array and check for each element whether we can for =m a cycle starting from each element or not. we will run a loop on every array element and keep track of the visisted element using an aditional array. we will check the condition for both the forward and backward cycles. if the condition of the cycle changes at any point, we will come out of that loop and continue verifying the loop condition formthe remaining elements.
+we get the required solution, but at what cost? the time complexity is O(n^2) as we run a loop every array element. the space complexity is O(n) because we use extra space to keep track of the visited elements. if our array contains thousands of elements, we will need a lot of our memory resources to solve this problem.
+### optimized approach using fast and slow pointers
+the circular array loop can be found efficiently using no extra memory with the fast and slow pointers technique. the algorithm uses fast and slow pointers that move through the array following the values at the array indexes. we move the fast pointer twice as fast as the slow pointer. if the pointers reach the same index, a cycle is detected. this is because the fast pointer coves twice the distance as slow pointer does in each iteration, so the fast pointer guarantees to meet the slow pointer if the cycle exists. if the loop is found we will return true.
+if the values at the array indexes of the slow and fast pointers have different signs i.e one pointer is pointing to a positive ad the other is pointing to a negative the loop cannot exist. additionally, if a moving pointer takes it to the current position again, it forms a loop with one element. since we are not considering it, we will skip it. if any of these conditions are TRUE, we will move to the next element.
+we start the algorithm by defining the following functions.
+* **nextStep(pointer, value, size)**: This function will be used to find the next location of our pointer based on the value present at the current location. it will do so by adding the current index to the value present at the index and taking the modulus with the size of the array. in case of the negative value obtained, it will add size to it to make it a valid index value
+* **isNotCycle(nums, prevDirection, pointer)**: this function will return TRUE if the cycle is not possible. it will retun FALSE otherwise. a cycle is not possible if either of the following conditions is true
+  * if both pointers have different directions i.e one pointer's value is negative and the other pointer's value is positive
+  * if the absolute value of nums[i] is equal to the length of the array, which will return to the same location. this means we have a loop with just one element, which is not the condition we are trying to detect.
+we iterate through each index i of the array nums, and in each iteration we set both fast and slow pointers to the current index. the variable forward determines the direction of the loop. we set it TRUE if the current element is positive and set FALSE if the current element is negative.
+* then we iterate a loop till we find the result and perform the following actions
+  * move the slow pointer nums[i] steps forward it its value is positive and move backward if the value of nums[i] is negative by calling the next step function.
+  * now after moving the slow pointer, check whether or not the cycle is possible with existing pointers locations using the isNotCycle fucntion
+  * if the cycle is not possible we dont need to continue with the locations of the current pointers, we break the inner loop and set both slow and fast pointers to the next index, i, and repeat the process.
+  * now move the fast pointer twice and after every move, we check whether the cycle is possible or not. if it is not possible, break the loop and set both slow and fast pointers at the next index i  and repeat the process.
+  * after moving both slow adn fast pointers, if they both meet at the same time location, return TRUE, since it means we have found a cycle.
+* if the cycle is ot found after traversing all the elements, return FALSE
 
 
 
