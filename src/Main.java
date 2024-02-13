@@ -39,6 +39,9 @@ public class Main {
         System.out.println(returnDistinctCharacters("aabbsdhhshdhh"));
         System.out.println(areCharactersAlternate("aabbsdhhshdhh"));
         System.out.println(areCharactersAlternate("babab"));
+        String name = "Muthomi";
+
+        System.out.println(name.substring(0, 3));
 
 
     }

@@ -443,6 +443,162 @@ the algorithm's time complexity is O(n), where n is the total number of nodes in
 the space complexity of the algorithm above is O(1), because it does not use any extra space. 
 
 
+# SLIDING WINDOW
+let us go through the sliding window pattern its real-world application, and some problems we can sole
+## Overview
+- the **sliding window** pattern is used to process sequential data by maintaining a moving subset of elements, called a window. the pattern is aimed at reducing the use of nested loops in an algorithm. it may be viewed as a variation of the two pointers pattern, with the pointers being used to set the window bounds.
+- a window is a sublist formed over a part of an iterable data structure. it can be used to slide over the data in chunks corresponding to the window size. the sliding window pattern allows us to process the data in segments instead of the entire list. the segment or window size can be set according to the problem's requirements. for example, if we have to find three consecutive integers with the largest sum in an array, we can set the window size to 3. this will allow us to process the data three elements ata time.
+- why is this method more efficient? it isn't if, for each window, we iterate over all the elements of the window because that gives us the same O(kn) time complexity
+- instead, what if we focused in the element entering the window and the element leaving it.? for example, after calculating the sum of the first three elements, we move the window one step ahead, subtract the element that is no longer in the window from the sum, and add the new element that has entered it. Next wwe check if the new sum is greater than the first. if it is, we update the max sum found so far. now, each time we move the window forward, we perform at most four operations, reducing the time complexity to O(4n), i.e O(n).
+- the following illustration shows how the window moves along an array. 
+![Screenshot 2024-02-13 at 18.31.17.png](..%2F..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fjd%2F_tr5km9d1bn2rtnrw8k2rxsc0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_MVCv4O%2FScreenshot%202024-02-13%20at%2018.31.17.png)
+
+## Examples
+![Screenshot 2024-02-13 at 18.32.00.png](..%2F..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fjd%2F_tr5km9d1bn2rtnrw8k2rxsc0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_GV03M8%2FScreenshot%202024-02-13%20at%2018.32.00.png)
+
+## Does my problem match this pattern?
+
+* **Yes** if these conditions are fulfilled.
+  * the problem requires repeated computations on a contiguous set of data elements(a subarray or a substring), such that the window moves across the input array from one and to the other. the size of the window may be fixed or variable, depending on the requirements of the problem. the repeated computations may be a direct part of the final solution, or they may be intermediate steps building up towards the final solution
+  * the computations performed every time the window moves take O(1) time or are a slow-growing function, such as log, of a small variable, say k, where k <<n.
+* **No** if either of these conditions are fulfilled
+  * the input data structure does not support random access
+  * you have to process the entire data without segmentation
+## Real-world problems
+many problems in the real world use the sliding window pattern. let us look at some examples
+* **Telecommunications**: find the maximum number of users connected to a cellular network's base station every k-millisecond sliding window.
+* **E-commerce**: Given a dataset of product IDs in the order they were viewed by the user and a list of products that are likely to be similar, find how many times these products occur together in the dataset. 
+* **Video streaming**: Given a stream of numbers representing the number of buffering events in a given user session, calculate the median number of buffering events in each one minute-interval.
+* **Social media content mining**: Given the lists of topics that two users have posted about, find the shortest sequence of posts by one user that includes all the topics that the other user has posted. 
+
+## Repeated DNA Sequence
+Given a string, s, that represents a DNA subsequence, and a number , k, return all the contiguous subsequences(substrings) of length k that occur more than once in the string. the order of the returned subsequences does not matter. if no repeated substring is found, the funtion should retun an empty set
+```java
+the dna is a sequence composed of a series of ucleotides abbreviated as A,C,G and T. for example, ACGAATTCCG. wHEN SUDING dna, it is useful to identify repeated sequences in it.
+```
+## Solution
+### Naive Approach
+a naive approach would be to iterate through the input DNA sequence and add all the unique substrings of length k to a set. if a substring is already present in a set, it is a repeated substring.
+here is how the algorithm works
+* we iterate the string using a pointer i, ranging from 0 to (n - k + 1). this is the number of k-length substrings present in the sequence
+* at each iteration, we generate the current k-length substring i.e s[i]... s[i - k + 1]
+* next, we check if this substring is already present in the set.
+  * if it is, the current substring is a repeated sequence, so we add it to our output
+  * otherwise, the current substring has not yet been repeated so we just add it to the set.
+* we repeat the above process for all the k-length substrings
+* once all k-length substrings have been evaluated we return the output
+
+the time complexity of this output is O((n - k) * K), where n is the length of the input sequence and k is the size of each contiguous subsequence we consider. this is because we iterate over (n - k + 1) substrings of length k, and at each iteration, the time taken to generate a k-length substring is O(k).
+
+the space complexity of this approach is O((n - k) * k), since in the worst case, our set can contain (n - k +1) elements, and at each iteration of the traversal, we are allocating memory to generate new k-length substring.
+
+## Optimized approach using sliding window
+the problem can be optimized using sliding window approach. we use the Rabin-Karp algorithm that utilizes a sliding window with rolling hash for pattern matching.
+here is the basic idea of the algorithm
+* we traverse the string by using a sliding window of length k, which slides one character forward on each iteration.
+* on each iteration, we compute the hash of the current k-length substring in the window
+* we check if te hash is already present in the set
+  * if it is, the substring is repeated, so we add it to the output.
+  * otherwise, the substring has not yet been repeated, so we add the computed hash to the set.
+* we repeat the above process for all k-length substrings by sliding the window one character forward on each iteration.
+* after all k-length substrings have been evaluated we return the output.
+There are multiple approaches for computing hash values, and the choice of the hash function can impact the algorithm's time complexity. let us look at some approaches below. 
+
+
+consider the ACTCT with k = 2
+1. initially, the sequence in the window is AC and its hash value is
+    
+       H(AC) = 65 + 67 = 132
+    since the above hash value has not been repeated yet, we add this hash value to the set and slide the window one character forward.
+2. The sequence in the window is now CT. to compute the hash value of CT, the ASCII of A will be removed from the previous hash value and the ASCII of T will then be added.
+
+       H(CT) = 132 - 65 + 84 = 151
+    Since the above hash value has not been repeated yet, we add this hash value to the set and slide the window one character forward
+
+3. the sequence in the window is now TC. to compute the hash value ot TC , the ACII of C will be removed from the previous hash value and then again added
+
+        H(TC)V=V151 - 67 + 67 = 151
+    Here we have same hash value but different sequences - CT and TC. this means that if a hash value is already present in the set, we need to compare the corresponding sequences as well to confirm if they are identical. In this case they are not, so we add this hash value to the set and slide the window one character forward
+4. the sequence in the window is now CT. to compute the hash value of CT, the ASCII of T will be removed from the previous hash value and then again added
+
+        H(CT) = 151 - 84 + 84 = 151
+    here, we have the same hash value, so we compare the two sequences. since they are identical the sequence has been repeated and is therefore added to the output. 
+Computing the hash value and then comparing the strings if the hashes are equal will take linear time, O(k). in the worst case, the comparisons will occur after each slide, which will make the running time the same as that of the naive approach, which is O((n - k) * k)
+
+### Hashing and Comparison in constant time
+we need a hash function that helps us achieve constant-time hashing. for this purpose we use the **polynomial rolling hash** technique:
+using the polynomial hash function to compute values of the k-length substrings skips the need to compare two sequences if their hash values are the same and therefore helps us achieve constant time hashing and comparison.
+
+## Step by Step Solution construction
+we will first define the following variables to set ourselves up to implement the polynomial rolling hash fucntion.
+* **mapping**: this is a hash map defining the numeric mapping of nucleotides. it will be of the form 
+
+        {A:1, C:2, G:3, T:4}
+* **a**: this is the base value used in the polynomial hash function. we will use a base value of 4 since there are 4 nucleotides in the sequence. 
+* **numbers**: this is an array storing the integer form of the string s based on the mapping defined above. for example, the sequence ACTCT, numbers will consist of [1,2,4,2,4]. this array will make it easier to access the numeric value of the nucleotides when calculating the hash value. 
+we declare a variable, ```hashvalue```, to store the hash value of the current k-length sequence in the window. it is initialized to 0.
+next we slide the window along the string, s, using a pointer, i , ranging from 0 to (n - k + 1):
+  * when i is 0, the window is at its starting position, i.e the first k-length substring. For this sequence, we calculate the hash value from scratch using the above-mentioned polynomial hash function.
+```java
+for(int j = 0; j < k; j++) {
+    hashValue += numbers.get(j) * (int) Math.pow(a, k-j-1);
+        }
+```
+* otherwise the window is not at its starting position, so we calculate the hash value of the current k-length substring by utilizing the hash value of the previous k-length susbtring.
+```java
+  int previousHashValue = hashValue;
+  hashValue = ((previousHashValue - numbers.get(i - 1) * (int) Math.pow(a, k-1) * a)) + numbers.get(i + k -1)
+```
+* the above process is repeated by sliding the window one character forward
+we declare the following variables to keep track of the hash values and store the repeated substrings:
+  * **hashSet**: this is a set that stores all the unique hash values of the k-length substrings. It is initialized to empty.
+  * **output**: this is a set that stores the repeated substrings
+we check if the calculated hashvalue of the current k-length substring is present in hashset
+  * if it is, the substring is repeated, so it is added to output
+```java
+  if(hashSet.contains(hashValue)) {
+    output.add(s.substring(i, i+k));
+  }
+```
+* otherwise, we will just add the hash value of the sustring to hashset
+```java
+    hashSet.add(hashValue);
+```
+when the hash values of all k-length substrings have been evaluated, i.e., the sliding window can not move forward, we return output
+### Solution Summary
+To recap, the solution to this problem can be divided into the following six main parts.
+1. iterate over all k-length substrings
+2. compare the hash value for the contents of the window 
+3. add this hash value to the set that keeps track of the hashes of all substrings of the given length.
+4. move the window one step forward and compute the hash of the new window using the rolling hash method.
+5. if the hash value of a window has already been seen, the sequence in this window is repeated, so we add it to the ouput array
+6. once all substrings have been evaluated, return the output array
+
+### Time complexity
+**Average case**
+the average case time complexity of this solution is O(n), where n is the length of the input string. it is calculated as follows
+  * time taken to populate the numbers array: O(n)
+  * time taken to traverse all the k-length substrings: O(n -k + 1)
+  * Time taken to calculate the hash value of a k-length substring: O(1)
+so the dominating time complexity becomes O(n)
+**Worst case**
+to understand the worst case time complexity of this solution, consider the input string "AAAAAAAA" WITH K = 2. This combination of inputs ensures that a repeated sequence "AA" is detected and added to the output each time the window slides forward. therefore, we must generate a k-length substring on each (n - k + 1) iteration of the loop. the time to generate a k-length substring is O(k). therefore the overall time complexity becomes O((n - k) * k)
+
+### Space Complexity
+the space complexity of this solution is O(n). it is calculated as follows:
+  * space occupied by the mapping hash map: O(1);
+  * space occupied by the numbers array: O(n)
+  * space occupied by the hashSet: O(n - k + 1);
+so the dominating space complexity becomes O(n).
+
+
+
+
+
+
+
+
+
 
 
 
