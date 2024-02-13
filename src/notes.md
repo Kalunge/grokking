@@ -356,6 +356,91 @@ we iterate through each index i of the array nums, and in each iteration we set 
   * after moving both slow adn fast pointers, if they both meet at the same time location, return TRUE, since it means we have found a cycle.
 * if the cycle is ot found after traversing all the elements, return FALSE
 
+# Find the duplicate number
+Given a unsorted array of positive numbers , ```nums```, such that the values lie in the range(1, n), inclusive and that there are n+1 numbers in that array, find and return the duplicate number present in ```nums```. there is only one repeated number in nums
+
+## Solution
+- we solve this problem using fast and slow pointers technique, without modifying the ```nums``` array and using only constant extra space. 
+- for this problem, the duplicate number will create a cycle in the ```nums``` array. the cycle in the array helps identify the duplicate number. 
+- to find the cycle, we will move in the nums array using the f(x) = nums[x] function, where x is the index of the array. this function constructs the following sequence to move
+
+      x, nums[x], nums[nums[x]], nums[nums[nums[x]]], ...
+- in the sequence above, every new element is an element in nums present at the index of the previous element. 
+- let us say we have an array ```[2,3,1,3]```. we will start with x = nums[0], which is 2, present at the 0th index of the array and then move to nums[x], which is 1, present at the 2 nd index. since we have found 1 at the 2 nd index, we will move to the 1st index, and so on. this example shoows that if we are given an array of length n + 1, with values in the range [1,n], we can use this traversal technique to visit all the locations in the array.
+![Screenshot 2024-02-13 at 14.27.18.png](..%2F..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fjd%2F_tr5km9d1bn2rtnrw8k2rxsc0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_DaqYIy%2FScreenshot%202024-02-13%20at%2014.27.18.png)
+as illustrated above, we have found that there is a cycle in an array with a duplicate number.Now the problem is to find the entry point of the cycle, which will be our duplicate number.
+- we solve this problem in two parts using the slow and fast pointers
+- in **the first part**: the slow pointer moves once, while the fast pointer is moving twice as fast as the slow pointer, it will be the first one to enter and move around the cycle. at some point after the slow pointer also enters and moves in the cycle, the fast pointer will meet the slow pointer. this will be the intersection point. 
+- **NB**: the intersection point of the two pointers is, in the general case, not the entry point of the cycle.
+- **in part two**: we will start moving again in the cycle, but this time, we will slow down the fast pointer so that it moves with the same speed as the slow pointer. 
+  - let us look at the journeys of the two pointers in part two
+  * the slow pointer will start from 0th position.
+  * the fast pointer will start from the intersection point.
+  * after a certain number of steps, let us call it F, the slow pointer meets the fast pointer. 
+  * this common ending will be the entry point of the cycle.
+let us look at the visual presentation
+
+* the fast pointer is traversing two times faster than the slow pointer. this can be represented by the following equation
+
+d <sub>fast</sub> == 2d <sub>slow</sub> ---(1)
+- here, d represent the number of elements traversed.
+![Screenshot 2024-02-13 at 14.40.36.png](..%2F..%2F..%2FScreenshot%202024-02-13%20at%2014.40.36.png)
+in the diagram above:
+  * green represent the entry point of the cycle.
+  * blue represent the intersection point 
+  * yellow represent the starting point
+  * F represents the steps taken from the starting point to the entry point 
+  * a represents the steps taken to reach the intersection point from the entry point
+  * C represents the cycle length, in terms of the number of steps taken to go once around the cycle.
+with this set up in mind, let us see the distance travelled by the slow and fast pointers.
+* the slow pointer travels F steps from starting point to the entry point of the cycle and then takes a steps from the entry point to the intersection point of the cycle, that is, the point where both pointers intersect. So, we can express the distance travelled by the slow pointer in the form of this equation.
+* d <sub>slow</sub> = F + a ---(2)
+* in the time it takes the slo pointer to travel F + a steps, the fast pointer, since it is travelling twice as fast as the slow pointer, will have also travelled around the cycle atleast once. so we can say the fast pointer, first, travels F steps from the starting point to the entrycpoint of the cycle., then travels atleast a cycle, and at the end travels a steps from the entry point to the intersection point of the cycle. now we can express the distance travelled by the fast pointer as the following equation:
+* d <sub>fast</sub> = F + C + a --- (3)
+* recall eq.(1)
+*  d<sub>fast</sub> = 2d <sub>slow</sub> ---(1)
+if we substitute the equivalent expression of d <sub>slow</sub> given in the second equation and the equivalent equation expression of d <sub>fast</sub> given in the third equation intoo the first equation we get:
+* F+C+a = 2(F+a)
+* let's simplify the equation
+
+F+C+a = 2f + 2a
+C = F + a
+
+therefore the distance from the starting point to the intersection point F+a, equals C.
+we can also rearrange the equation as follows
+F = C - a
+as we can see from our diagram, C - a is, in fact, the distance from the intersection point back to the entry point. This illustrates why, when we move one pointer forward, starting at the intersection point, and another pointer from the starting point , the point where they meet is the entry point of the cycle.
+## Time complexity
+The time complexity of the algorithm is O(n) where n is the length of nums. this is because, in each part of the solution the slow pointer traverses the nums just once. 
+## space complexity
+the algorithm takes O(1) space complexity, since we only used constant space to store the fast and slow pointers.
+
+# Palindrome Linked List
+the fast and slow pointers technique helps determine whether a linked list is a plaindrome or not , because it allows us to efficiently traverse the list and find the middle node in a single pass. we can do this in linear time and with constant extra space
+to determine whether a linked list is a palindrome, we first finde the middle node of the linked list using the fast and slow pointers approach. Then, we will reverse the second half of the linked list, starting from the node after the middle node until the end of the list. next we will compare the first half with the second half.
+
+if both halves of the list match, the linked list is a palindrome. otherwise, it is not. in the end, we reverse the second half of the linked list again. this is done to revert it to the original structure of the linked list so that the input is not modified by the palindrome checking process.
+
+The algorithm to solve this problem is as follows
+* First, we will find the middle node of the linked list. to do this, we will traverse the linked list using two pointers, where the slow pointer will move one step forward, and the fast pointer will move two steps forward. we will do this untill the fast pointer reaches the end  of the list or a null node. at this point, the slow pointer will be pointing at the middle node of the list.
+* next we reverse the second half of the linked list, starting from the node after the middle node. to reverse the list we will follow the following steps
+  * initiate three pointers prev, next and current. the prev and next pointers are initialized as NULL, while curr is initialized to the head of the linked list.
+  * Iterate over the linked list, while iterating perform the following steps
+    * before changing the next of curr, store the next node using the following line
+          
+          next = curr.next
+    * now we will update the next pointer of curr with the prev pointer. this will reverse the pointer of the current node from forward to backward, eventaully aiding the reversal of the linked list.
+    * after reversing the pointer, we will update prev as curr and curr as nextusing the following lines of code respectively
+
+          prev = curr; and curr = next;
+  * after finding the mid of the linked list and reversing its second half , the last step is to compare every element of the first half of the linked list with the corresponding element in the second half of the reversed linked list. if both halves are the same, the list is a palindrome, and we will return true otherwise we will return FALSE.
+let us look at the illustration
+  
+### Time complexity
+the algorithm's time complexity is O(n), where n is the total number of nodes in the linked list
+
+### space complexity
+the space complexity of the algorithm above is O(1), because it does not use any extra space. 
 
 
 
